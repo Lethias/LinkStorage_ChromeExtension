@@ -29,10 +29,6 @@ const constructedJWT = 'Bearer ' + jwt;
 
 $(document).ready(function () {
     loadContent();
-    $('#searchchipstags').chips({
-        placeholder: 'Enter a tag',
-        secondaryPlaceholder: '+Tag',
-    });
     M.AutoInit();
 });
 
@@ -109,8 +105,8 @@ function loadContent() {
 
             // Setup for Category Button
 
-            let firstdiv = document.createElement('div');
-            let addcategorybutton = document.createElement('a');
+            const firstdiv = document.createElement('div');
+            const addcategorybutton = document.createElement('a');
 
             addcategorybutton.setAttribute('id', 'addcategory');
             addcategorybutton.setAttribute('class', 'waves-effect waves-light btn');
@@ -122,17 +118,17 @@ function loadContent() {
 
             // Form setup for adding categories
 
-            let hiddendivcategory = document.createElement('div');
-            let addcatform = document.createElement('form');
-            let inputdivname = document.createElement('div');
-            let inputdivdesc = document.createElement('div');
-            let categoryname = document.createElement('input');
-            let categorydesc = document.createElement('input');
-            let categorynamelabel = document.createElement('label');
-            let categorydesclabel = document.createElement('label');
-            let categorynamevalidateerror = document.createElement('span');
-            let categorydescvalidateerror = document.createElement('span');
-            let categorysubmitbutton = document.createElement('a');
+            const hiddendivcategory = document.createElement('div');
+            const addcatform = document.createElement('form');
+            const inputdivname = document.createElement('div');
+            const inputdivdesc = document.createElement('div');
+            const categoryname = document.createElement('input');
+            const categorydesc = document.createElement('input');
+            const categorynamelabel = document.createElement('label');
+            const categorydesclabel = document.createElement('label');
+            const categorynamevalidateerror = document.createElement('span');
+            const categorydescvalidateerror = document.createElement('span');
+            const categorysubmitbutton = document.createElement('a');
 
             addcatform.setAttribute('id', 'categoryform');
             inputdivname.setAttribute('class', 'input-field');
@@ -194,9 +190,9 @@ function loadContent() {
             categorysubmitbutton.addEventListener('click',
                 function () {
                     if (addcatform.checkValidity()) {
-                        let categoryname = document.getElementById('categoryname').value;
-                        let categorydesc = document.getElementById('categorydesc').value;
-                        let body = JSON.stringify({name: categoryname, description: categorydesc});
+                        const categoryname = document.getElementById('categoryname').value;
+                        const categorydesc = document.getElementById('categorydesc').value;
+                        const body = JSON.stringify({name: categoryname, description: categorydesc});
 
                         let request = new XMLHttpRequest();
                         request.open('POST', url + '/user/categories');
@@ -221,21 +217,21 @@ function loadContent() {
 
                 // Form setup for adding Links
 
-                let hiddendivlink = document.createElement('div');
-                let addlinkform = document.createElement('form');
-                let inputdivlinkname = document.createElement('div');
-                let inputdivlinkdesc = document.createElement('div');
-                let linkname = document.createElement('input');
-                let linkdescription = document.createElement('input');
-                let linknamelabel = document.createElement('label');
-                let linkdescriptionlabel = document.createElement('label');
-                let linknamevalidateerror = document.createElement('span');
-                let linkdescvalidateerror = document.createElement('span');
-                let linksubmitbutton = document.createElement('a');
+                const hiddendivlink = document.createElement('div');
+                const addlinkform = document.createElement('form');
+                const inputdivlinkname = document.createElement('div');
+                const inputdivlinkdesc = document.createElement('div');
+                const linkname = document.createElement('input');
+                const linkdescription = document.createElement('input');
+                const linknamelabel = document.createElement('label');
+                const linkdescriptionlabel = document.createElement('label');
+                const linknamevalidateerror = document.createElement('span');
+                const linkdescvalidateerror = document.createElement('span');
+                const linksubmitbutton = document.createElement('a');
 
 
-                let inputdivlinkchips = document.createElement('div');
-                let linkchips = document.createElement('input');
+                const inputdivlinkchips = document.createElement('div');
+                const linkchips = document.createElement('input');
 
                 addlinkform.setAttribute('id', category._id + 'form');
                 inputdivlinkname.setAttribute('class', 'input-field');
@@ -285,15 +281,15 @@ function loadContent() {
 
                 // Adding categories to content
 
-                let listitem = document.createElement('li');
-                let collapseheader = document.createElement('div');
-                let rowdiv = document.createElement('div');
-                let coldivone = document.createElement('div');
-                let coldivtwo = document.createElement('div');
-                let title = document.createElement('span');
-                let description = document.createElement('span');
-                let addlinkbutton = document.createElement('a');
-                let collapsebody = document.createElement('div');
+                const listitem = document.createElement('li');
+                const collapseheader = document.createElement('div');
+                const rowdiv = document.createElement('div');
+                const coldivone = document.createElement('div');
+                const coldivtwo = document.createElement('div');
+                const title = document.createElement('span');
+                const description = document.createElement('span');
+                const addlinkbutton = document.createElement('a');
+                const collapsebody = document.createElement('div');
 
                 collapseheader.setAttribute('class', 'collapsible-header blue-grey darken-3 white-text');
                 rowdiv.setAttribute('class', 'row');
@@ -341,12 +337,12 @@ function loadContent() {
                 linksubmitbutton.addEventListener('click',
                     function () {
                         if (addlinkform.checkValidity()) {
-                            let linkname = document.getElementById(category._id + 'name').value;
-                            let linkdescription = document.getElementById(category._id + 'description').value;
-                            let tags = [];
+                            const linkname = document.getElementById(category._id + 'name').value;
+                            const linkdescription = document.getElementById(category._id + 'description').value;
+                            const tags = [];
 
-                            let instance = M.Chips.getInstance($('#' + category._id + 'tagsfield'));
-                            let taginput = instance.chipsData;
+                            const instance = M.Chips.getInstance($('#' + category._id + 'tagsfield'));
+                            const taginput = instance.chipsData;
                             console.log(taginput);
 
                             for (let a = 0; a < taginput.length; a++) {
@@ -358,8 +354,8 @@ function loadContent() {
 
                             // TODO warum löscht du nur jeden 2. raus
 
-                            let createdAt = formatDate();
-                            let body = JSON.stringify({
+                            const createdAt = formatDate();
+                            const body = JSON.stringify({
                                 link: linkname,
                                 linkdescription: linkdescription,
                                 createdAt: createdAt,
@@ -373,11 +369,11 @@ function loadContent() {
 
                             request.onload = function () {
                                 if (request.status >= 200 && request.status < 400) {
-                                    let deletehelper = JSON.parse(this.response);
-                                    let deletehelperextended = deletehelper.link;
+                                    const deletehelper = JSON.parse(this.response);
+                                    const deletehelperextended = deletehelper.link;
 
-                                    let divbody = document.createElement('div');
-                                    let card = createCard(category._id, deletehelperextended, true);
+                                    const divbody = document.createElement('div');
+                                    const card = createCard(category._id, deletehelperextended);
 
                                     divbody.setAttribute('class', 'collapsible-body noMargin noPadding');
 
@@ -388,7 +384,7 @@ function loadContent() {
                                     divbody.style.display = 'block';
                                     addlinkbutton.setAttribute('class', 'waves-effect waves-light btn');
                                     addlinkbutton.textContent = 'Add Link';
-                                    let resetform = category._id + 'form';
+                                    const resetform = category._id + 'form';
                                     $("#" + resetform)[0].reset();
 
                                 } else {
@@ -401,12 +397,12 @@ function loadContent() {
 
                 // Setup Collapsible Body in loop
 
-                for (let i = 0; i < category.links.length; i++) {
+                for (let c = 0; c < category.links.length; c++) {
 
                     // Adding Links to content
 
-                    let divbody = document.createElement('div');
-                    let card = createCard(category._id, category.links[i], true);
+                    const divbody = document.createElement('div');
+                    const card = createCard(category._id, category.links[c]);
 
                     divbody.setAttribute('class', 'collapsible-body noMargin noPadding');
 
@@ -428,8 +424,8 @@ searchsubmiturldesc.addEventListener('click', function () {
             searchurldesccontent.removeChild(searchurldesccontent.firstChild);
         }
 
-        let searchinput = document.getElementById('searchfieldurldesc').value;
-        let searchselect = document.getElementById('searchselecturldesc').value;
+        const searchinput = document.getElementById('searchfieldurldesc').value;
+        const searchselect = document.getElementById('searchselecturldesc').value;
         console.log(searchselect);
 
         let request = new XMLHttpRequest();
@@ -440,12 +436,12 @@ searchsubmiturldesc.addEventListener('click', function () {
                 let data = JSON.parse(request.response);
 
                 data.forEach(category => {
-                    for (let i = 0; i < category.links.length; i++) {
-                        if (category.links[i].link.includes(searchinput) && searchselect === '1') {
-                            let card = createCard(category._id, category.links[i], false);
+                    for (let d = 0; d < category.links.length; d++) {
+                        if (category.links[d].link.includes(searchinput) && searchselect === '1') {
+                            let card = createCard(category._id, category.links[d]);
                             searchurldesccontent.appendChild(card);
-                        } else if (category.links[i].linkdescription.includes(searchinput) && searchselect === '2') {
-                            let card = createCard(category._id, category.links[i], false);
+                        } else if (category.links[d].linkdescription.includes(searchinput) && searchselect === '2') {
+                            let card = createCard(category._id, category.links[d]);
                             searchurldesccontent.appendChild(card);
                         }
                     }
@@ -467,10 +463,10 @@ searchsubmittags.addEventListener('click', function () {
             searchtagscontent.removeChild(searchtagscontent.firstChild);
         }
 
-        let tags = [];
+        let tagcompare = [];
         let taginput = (M.Chips.getInstance($('#searchchipstags')).chipsData);
-        for (let j = 0; j < taginput.length; j++) {
-            tags.push(taginput[j].tag);
+        for (let e = 0; e < taginput.length; e++) {
+            tagcompare.push(taginput[e].tag);
         }
 
         let request = new XMLHttpRequest();
@@ -479,15 +475,17 @@ searchsubmittags.addEventListener('click', function () {
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
                 let data = JSON.parse(request.response);
-                console.log(data);
 
                 data.forEach(category => {
-                    for (let i = 0; i < category.links.length; i++) {
-                        const filteredLinks = category.links.filter(link =>
-                            tags.every(searchTag => link.tags.includes(searchTag))
-                        );
+
+                    let filteredLinks = category.links.filter(link =>
+                        tagcompare.every(searchTag => link.tags.includes(searchTag))
+                    );
+                    for (let f = 0; f < filteredLinks.length; f++) {
                         if (filteredLinks && filteredLinks.length) {
-                            let card = createCard(category._id, category.links[i], false);
+                            console.log(filteredLinks);
+                            console.log(filteredLinks.length);
+                            const card = createCard(category._id, filteredLinks[f]);
                             searchtagscontent.appendChild(card);
                         }
                     }
@@ -502,17 +500,17 @@ searchsubmittags.addEventListener('click', function () {
     }
 });
 
-function createCard(categoryid, link, clear) {
+function createCard(categoryid, link) {
 
-    let card = document.createElement('div');
-    let cardcontent = document.createElement('div');
-    let span = document.createElement('span');
-    let pdescription = document.createElement('p');
-    let pdate = document.createElement('p');
-    let ptags = document.createElement('p');
-    let cardbottom = document.createElement('div');
-    let visitlinkbutton = document.createElement('a');
-    let deletelinkbutton = document.createElement('a');
+    const card = document.createElement('div');
+    const cardcontent = document.createElement('div');
+    const span = document.createElement('span');
+    const pdescription = document.createElement('p');
+    const pdate = document.createElement('p');
+    const ptags = document.createElement('p');
+    const cardbottom = document.createElement('div');
+    const visitlinkbutton = document.createElement('a');
+    const deletelinkbutton = document.createElement('a');
 
     card.setAttribute('class', 'card blue-grey lighten-4');
     cardcontent.setAttribute('class', 'card-content');
@@ -525,8 +523,8 @@ function createCard(categoryid, link, clear) {
     pdescription.setAttribute('class', 'underlinetext');
     pdate.setAttribute('class', 'right-align');
 
-    let substringhelper = link.link;
-    let substring = substringhelper.substring(0, 35);
+    const substringhelper = link.link;
+    const substring = substringhelper.substring(0, 35);
 
     span.innerText = substring;
     pdescription.textContent = 'Description: ' + link.linkdescription;
@@ -535,31 +533,31 @@ function createCard(categoryid, link, clear) {
     visitlinkbutton.textContent = "Visit Link";
     deletelinkbutton.textContent = 'Delete Link';
 
-   /* for (let i = 0; i < link.tags.length; i++) {
-        const chipsinstance = M.Chips.getInstance(searchchipstags);
-        const tagadd = document.createElement('a');
-        tagadd.setAttribute('href', '#');
-        tagadd.textContent = link.tags[i] + '  ';
-        ptags.appendChild(tagadd);
-        tagadd.addEventListener('click', function () {
-            const chipsinstancedata = (M.Chips.getInstance($('#searchchipstags')).chipsData);
-            if (clear) {
-                for (let j = 0; j < chipsinstancedata.length; j++) {
-                    searchtagscontent.removeChild(searchtagscontent.firstChild);
-                }
-                $('ul.tabs').tabs("select", "tab3");
-                $('ul.tabs').tabs("select", "tagstab");
-                chipsinstance.addChip({
-                    tag: link.tags[i],
-                });
-            }
-            else {
-            chipsinstance.addChip({
-                tag: link.tags[i],
-            });
-            }
-        })
-    } */
+    /* for (let i = 0; i < link.tags.length; i++) {
+         const chipsinstance = M.Chips.getInstance(searchchipstags);
+         const tagadd = document.createElement('a');
+         tagadd.setAttribute('href', '#');
+         tagadd.textContent = link.tags[i] + '  ';
+         ptags.appendChild(tagadd);
+         tagadd.addEventListener('click', function () {
+             const chipsinstancedata = (M.Chips.getInstance($('#searchchipstags')).chipsData);
+             if (clear) {
+                 for (let j = 0; j < chipsinstancedata.length; j++) {
+                     searchtagscontent.removeChild(searchtagscontent.firstChild);
+                 }
+                 $('ul.tabs').tabs("select", "tab3");
+                 $('ul.tabs').tabs("select", "tagstab");
+                 chipsinstance.addChip({
+                     tag: link.tags[i],
+                 });
+             }
+             else {
+             chipsinstance.addChip({
+                 tag: link.tags[i],
+             });
+             }
+         })
+     } */
 
     card.appendChild(cardcontent);
     cardcontent.appendChild(pdate);
