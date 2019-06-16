@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+    <title>Link Storage Chrome Extension</title>
+    <!-- Imports -->
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body class="scroll">
+
+<nav class="blue-grey darken-3">
+    <div class="nav-wrapper">
+        <a class="brand-logo center">Link Storage</a>
+    </div>
+</nav>
+
+<div class="row noMargin noPadding">
+
+    <div class="col s12 noMargin noPadding">
+        <ul class="tabs tabs-fixed-width" id="tabs">
+            <li class="tab col s3"><a class="" href="#tab1" id="login">Login</a></li>
+            <li class="tab col s3"><a class="active" href="#tab2" id="storage">Storage</a></li>
+            <li class="tab col s3"><a class="" href="#tab3" id="search">Search</a></li>
+        </ul>
+    </div>
+
+    <div id="tab1" class="col s12 scroll noMargin noPadding">
+        <ul class="tabs tabs-fixed-width">
+            <li class="tab col s3"><a class="active" href="#logintab">Login</a></li>
+            <li class="tab col s3"><a class="" href="#registertab">Register</a></li>
+        </ul>
+        <div id="logintab">
+            <form id="loginform" class="col s12">
+                <div class="input-field col s12">
+                    <input id="loginemail" type="email" class="validate" required>
+                    <label for="loginemail">Email</label>
+                    <span class="helper-text" data-error="Please enter a correct Email"></span>
+                </div>
+                <div class="input-field col s12">
+                    <input id="loginpassword" type="password" class="validate" minlength=4 maxlength=16 required>
+                    <label for="loginpassword">Password</label>
+                    <span class="helper-text" data-error="Your password should be between 6 and 16 characters"></span>
+                </div>
+                <a class="waves-effect waves-light btn" id="loginsubmit"><i class="material-icons left">lock_open</i>Login</a>
+            </form>
+            <div class="row center">
+                <h4 id="loginh4"></h4>
+            </div>
+        </div>
+        <div id="registertab">
+            <form id="registerform" class="col s12">
+                <div class="input-field col s12">
+                    <input id="registeremail" type="email" class="validate" required>
+                    <label for="registeremail">Email</label>
+                    <span class="helper-text" data-error="Please enter a correct Email"></span>
+                </div>
+                <div class="input-field col s12">
+                    <input id="registerpassword" type="password" class="validate" minlength=4 maxlength=16 required>
+                    <label for="registerpassword">Password</label>
+                    <span class="helper-text" data-error="Your password should be between 6 and 16 characters"></span>
+                </div>
+                <a class="waves-effect waves-light btn" id="registersubmit"><i class="material-icons left">lock_open</i>Register</a>
+            </form>
+            <div class="row center">
+                <h4 id="registerh4"></h4>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab2" class="col s12 scroll noMargin noPadding">
+        <ul id="ulist" class="collapsible" style="display: none;"></ul>
+        <h3 class="align center red-text" id="errortab2"></h3>
+    </div>
+
+    <div id="tab3" class="col s12 scroll noMargin noPadding">
+        <ul class="tabs tabs-fixed-width">
+            <li class="tab col s3"><a class="active" href="#urltab">URL / Description</a></li>
+            <li class="tab col s3"><a class="" href="#tagstab">Tags</a></li>
+        </ul>
+        <div id="urltab">
+            <form id="searchformurldesc" class="col s12">
+                <div class="input-field col s12" id="searchinputurldesc">
+                    <input id="searchfieldurldesc" type="text" class="validate" required>
+                    <label for="searchfieldurldesc">Search</label>
+                    <span class="helper-text" data-error="Field can't be empty"></span>
+                </div>
+                <div class="input-field col s12">
+                    <select id="searchselecturldesc">
+                        <option value="1" selected>URL</option>
+                        <option value="2">Description</option>
+                    </select>
+                    <label>Options</label>
+                </div>
+                <a class="waves-effect waves-light btn" id="searchsubmiturldesc">Search</a>
+            </form>
+            <div id="searchurldesccontent" class="col s12"></div>
+            <h3 class="align center red-text" id="errortab3"></h3>
+        </div>
+        <div id="tagstab">
+            <form id="searchformtags" class="col s12">
+                <div class="chips chips-placeholder" id="searchchipstags">
+                </div>
+                <a class="waves-effect waves-light btn" id="searchsubmittags">Search</a>
+            </form>
+            <div id="searchtagscontent" class="col s12"></div>
+            <h3 class="align center red-text" id="errortab4"></h3>
+        </div>
+    </div>
+
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>
