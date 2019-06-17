@@ -228,8 +228,6 @@ function loadContent() {
                 const linknamevalidateerror = document.createElement('span');
                 const linkdescvalidateerror = document.createElement('span');
                 const linksubmitbutton = document.createElement('a');
-
-
                 const inputdivlinkchips = document.createElement('div');
                 const linkchips = document.createElement('input');
 
@@ -289,6 +287,7 @@ function loadContent() {
                 const title = document.createElement('span');
                 const description = document.createElement('span');
                 const addlinkbutton = document.createElement('a');
+                const deletecategorybutton = document.createElement('a');
                 const collapsebody = document.createElement('div');
 
                 collapseheader.setAttribute('class', 'collapsible-header blue-grey darken-3 white-text');
@@ -297,14 +296,18 @@ function loadContent() {
                 coldivtwo.setAttribute('class', 'col s12');
                 title.setAttribute('class', 'biggertext');
                 collapsebody.setAttribute('class', 'collapsible-body noMargin noPadding');
-                addlinkbutton.setAttribute('class', 'waves-effect waves-light btn right-align');
+                addlinkbutton.setAttribute('class', 'waves-effect waves-light btn');
                 addlinkbutton.setAttribute('id', category._id + 'addbtn');
+                deletecategorybutton.setAttribute('class', 'waves-effect waves-light btn red modal-trigger');
+                deletecategorybutton.setAttribute('id', category._id + 'delcatbtn');
+                deletecategorybutton.setAttribute('data-target', 'modal1');
 
                 ulist.appendChild(listitem);
                 listitem.appendChild(collapseheader);
                 listitem.appendChild(collapsebody);
                 collapseheader.appendChild(rowdiv);
                 collapsebody.appendChild(addlinkbutton);
+                collapsebody.appendChild(deletecategorybutton);
                 collapsebody.appendChild(hiddendivlink);
                 rowdiv.appendChild(coldivone);
                 rowdiv.appendChild(coldivtwo);
@@ -314,12 +317,13 @@ function loadContent() {
                 title.textContent = category.name;
                 description.textContent = category.description;
                 addlinkbutton.textContent = 'Add link';
+                deletecategorybutton.textContent = 'Delete Category';
 
                 M.AutoInit();
 
                 // Show/Hide Add Link button
 
-                document.getElementById(category._id + 'addbtn').addEventListener('click',
+                addlinkbutton.addEventListener('click',
                     function () {
                         if (hiddendivlink.style.display === 'none') {
                             hiddendivlink.style.display = 'block';
@@ -332,6 +336,34 @@ function loadContent() {
                         }
                     });
 
+                // Delete Category button
+
+                deletecategorybutton.addEventListener('click', function () {
+                    let modal1 = document.getElementById('modal1');
+                    let instances = M.Modal.init(modal1, {
+                        dismissible: true, // Modal can be dismissed by clicking outside of the modal
+                        onOpenStart: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+                            document.getElementById('modalh4').textContent = 'Delete category ' + category.name + ' ?';
+                            console.log(modal, trigger);
+                        },
+                        onCloseEnd: function() { // Callback for Modal close
+                            let request = new XMLHttpRequest();
+                            request.open('DELETE', url + '/user/categories/' + category._id);
+                            request.setRequestHeader('Authorization', constructedJWT);
+                            request.setRequestHeader("Content-Type", "application/json");
+
+                            request.onload = function () {
+                                if (request.status >= 200 && request.status < 400) {
+                                    loadContent();
+                                } else {
+                                    console.log('Fehler bei Linkerstellung');
+                                }
+                            };
+                            request.send();
+                        }
+                    });
+                });
+
                 // Submit button with API post to add Link
 
                 linksubmitbutton.addEventListener('click',
@@ -343,16 +375,14 @@ function loadContent() {
 
                             const instance = M.Chips.getInstance($('#' + category._id + 'tagsfield'));
                             const taginput = instance.chipsData;
-                            console.log(taginput);
+                            const taginputlength = taginput.length;
 
                             for (let a = 0; a < taginput.length; a++) {
                                 tags.push(taginput[a].tag);
                             }
-                            for (let b = 0; b < taginput.length; b++) {
+                            for (let b = taginput.length; b >= 0; b--) {
                                 instance.deleteChip(b);
                             }
-
-                            // TODO warum löscht du nur jeden 2. raus
 
                             const createdAt = formatDate();
                             const body = JSON.stringify({
@@ -426,7 +456,6 @@ searchsubmiturldesc.addEventListener('click', function () {
 
         const searchinput = document.getElementById('searchfieldurldesc').value;
         const searchselect = document.getElementById('searchselecturldesc').value;
-        console.log(searchselect);
 
         let request = new XMLHttpRequest();
         request.open('GET', url + '/user/categories');
@@ -483,8 +512,6 @@ searchsubmittags.addEventListener('click', function () {
                     );
                     for (let f = 0; f < filteredLinks.length; f++) {
                         if (filteredLinks && filteredLinks.length) {
-                            console.log(filteredLinks);
-                            console.log(filteredLinks.length);
                             const card = createCard(category._id, filteredLinks[f]);
                             searchtagscontent.appendChild(card);
                         }
@@ -529,35 +556,31 @@ function createCard(categoryid, link) {
     span.innerText = substring;
     pdescription.textContent = 'Description: ' + link.linkdescription;
     pdate.textContent = 'Link created at: ' + link.createdAt;
-    ptags.textContent = 'Tags: ' + link.tags;
+    ptags.textContent = 'Tags: ';
     visitlinkbutton.textContent = "Visit Link";
     deletelinkbutton.textContent = 'Delete Link';
 
-    /* for (let i = 0; i < link.tags.length; i++) {
-         const chipsinstance = M.Chips.getInstance(searchchipstags);
-         const tagadd = document.createElement('a');
-         tagadd.setAttribute('href', '#');
-         tagadd.textContent = link.tags[i] + '  ';
-         ptags.appendChild(tagadd);
-         tagadd.addEventListener('click', function () {
-             const chipsinstancedata = (M.Chips.getInstance($('#searchchipstags')).chipsData);
-             if (clear) {
-                 for (let j = 0; j < chipsinstancedata.length; j++) {
-                     searchtagscontent.removeChild(searchtagscontent.firstChild);
-                 }
-                 $('ul.tabs').tabs("select", "tab3");
-                 $('ul.tabs').tabs("select", "tagstab");
-                 chipsinstance.addChip({
-                     tag: link.tags[i],
-                 });
-             }
-             else {
-             chipsinstance.addChip({
-                 tag: link.tags[i],
-             });
-             }
-         })
-     } */
+    for (let i = 0; i < link.tags.length; i++) {
+        const chipsinstance = M.Chips.getInstance(searchchipstags);
+        const tagadd = document.createElement('a');
+        tagadd.setAttribute('href', '#');
+        tagadd.textContent = link.tags[i] + '  ';
+        ptags.appendChild(tagadd);
+        tagadd.addEventListener('click', function () {
+            const chipsinstancedata = (M.Chips.getInstance($('#searchchipstags')).chipsData);
+            if (true) {
+                $('ul.tabs').tabs("select", "tab3");
+                $('ul.tabs').tabs("select", "tagstab");
+                chipsinstance.addChip({
+                    tag: link.tags[i],
+                });
+                console.log('chip added');
+                for (let j = 0; j < chipsinstancedata.length; j++) {
+                    searchtagscontent.removeChild(searchtagscontent.firstChild);
+                }
+            }
+        })
+    }
 
     card.appendChild(cardcontent);
     cardcontent.appendChild(pdate);
@@ -581,7 +604,6 @@ function createCard(categoryid, link) {
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
                 deletelinkbutton.parentNode.parentNode.parentNode.parentNode.removeChild(deletelinkbutton.parentNode.parentNode.parentNode);
-                console.log('Link deleted');
             } else {
                 console.log('Something went wrong');
             }
