@@ -24,13 +24,19 @@ const searchformtags = document.getElementById('searchformtags');
 
 const searchchipstags = document.getElementById('searchchipstags');
 
+const modalsinside = document.getElementById('modalsinside');
+
 const jwt = localStorage.getItem('token');
 const constructedJWT = 'Bearer ' + jwt;
 
-$(document).ready(function () {
+// Initial content load
+
+document.addEventListener('DOMContentLoaded', function() {
     loadContent();
     M.AutoInit();
 });
+
+// Login eventListener
 
 loginsubmit.addEventListener('click', function () {
     if (loginform.checkValidity()) {
@@ -56,6 +62,8 @@ loginsubmit.addEventListener('click', function () {
         request.send(body);
     }
 });
+
+// Register eventListener
 
 registersubmit.addEventListener('click', function () {
     if (registerform.checkValidity()) {
@@ -84,6 +92,7 @@ registersubmit.addEventListener('click', function () {
     }
 });
 
+// Loading Storage when user is logged in
 
 function loadContent() {
     tab2.removeChild(tab2.firstChild);
@@ -252,8 +261,12 @@ function loadContent() {
                 inputdivlinkchips.setAttribute('class', 'chips chips-placeholder input-field');
                 inputdivlinkchips.setAttribute('id', category._id + 'tagsfield');
                 linkchips.setAttribute('class', 'input');
-                linkchips.setAttribute('placeholder', 'Enter a Tag');
                 linkchips.setAttribute('id', category._id + 'tags');
+
+                let chip = M.Chips.init(inputdivlinkchips, {
+                    placeholder: 'Enter a Tag',
+                    secondaryPlaceholder: '+Tag'
+                });
 
                 linkname.required = true;
                 linkdescription.required = true;
@@ -298,9 +311,9 @@ function loadContent() {
                 collapsebody.setAttribute('class', 'collapsible-body noMargin noPadding');
                 addlinkbutton.setAttribute('class', 'waves-effect waves-light btn');
                 addlinkbutton.setAttribute('id', category._id + 'addbtn');
-                deletecategorybutton.setAttribute('class', 'waves-effect waves-light btn red modal-trigger');
+                deletecategorybutton.setAttribute('class', 'waves-effect waves-light modal-trigger btn red right');
                 deletecategorybutton.setAttribute('id', category._id + 'delcatbtn');
-                deletecategorybutton.setAttribute('data-target', 'modal1');
+                deletecategorybutton.setAttribute('data-target', category._id + 'modal');
 
                 ulist.appendChild(listitem);
                 listitem.appendChild(collapseheader);
@@ -319,8 +332,6 @@ function loadContent() {
                 addlinkbutton.textContent = 'Add link';
                 deletecategorybutton.textContent = 'Delete Category';
 
-                M.AutoInit();
-
                 // Show/Hide Add Link button
 
                 addlinkbutton.addEventListener('click',
@@ -336,30 +347,61 @@ function loadContent() {
                         }
                     });
 
-                // Delete Category button
+
+                // Delete category button with API post to delete category and links
 
                 deletecategorybutton.addEventListener('click', function () {
-                    let modal1 = document.getElementById('modal1');
-                    let instances = M.Modal.init(modal1, {
-                        dismissible: true, // Modal can be dismissed by clicking outside of the modal
-                        onOpenStart: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-                            document.getElementById('modalh4').textContent = 'Delete category ' + category.name + ' ?';
-                            console.log(modal, trigger);
-                        },
-                        onCloseEnd: function() { // Callback for Modal close
-                            let request = new XMLHttpRequest();
-                            request.open('DELETE', url + '/user/categories/' + category._id);
-                            request.setRequestHeader('Authorization', constructedJWT);
-                            request.setRequestHeader("Content-Type", "application/json");
+                    const modaldiv = document.createElement('div');
+                    const modalcontentdiv = document.createElement('div');
+                    const modalcontenth5 = document.createElement('h5');
+                    const modalcontentp = document.createElement('p');
+                    const modalfooterdiv = document.createElement('div');
+                    const confirmdeletecategory = document.createElement('a');
+                    const canceldeletecategory = document.createElement('a');
 
-                            request.onload = function () {
-                                if (request.status >= 200 && request.status < 400) {
-                                    loadContent();
-                                } else {
-                                    console.log('Fehler bei Linkerstellung');
-                                }
-                            };
-                            request.send();
+                    modaldiv.setAttribute('class', 'modal');
+                    modaldiv.setAttribute('id', category._id + 'modal');
+                    modalcontentdiv.setAttribute('class', 'modal-content');
+                    modalfooterdiv.setAttribute('class', 'modal-footer');
+                    confirmdeletecategory.setAttribute('class', 'waves-effect waves-red btn-flat red white-text');
+                    canceldeletecategory.setAttribute('class', 'modal-close waves-effect waves-green btn-flat green white-text');
+
+                    modalsinside.appendChild(modaldiv);
+                    modaldiv.appendChild(modalcontentdiv);
+                    modaldiv.appendChild(modalfooterdiv);
+                    modalcontentdiv.appendChild(modalcontenth5);
+                    modalcontentdiv.appendChild(modalcontentp);
+                    modalfooterdiv.appendChild(confirmdeletecategory);
+                    modalfooterdiv.appendChild(canceldeletecategory);
+
+                    modalcontenth5.textContent = 'Delete category ' + category.name + ' ?';
+                    modalcontentp.textContent = 'Do you really want to delete this category ? All containing links will be deleted as well.';
+                    confirmdeletecategory.textContent = 'Delete';
+                    canceldeletecategory.textContent = 'Cancel';
+
+                    const modalinstance = M.Modal.init(modaldiv);
+
+                    confirmdeletecategory.addEventListener('click', function () {
+                        let request = new XMLHttpRequest();
+                        request.open('DELETE', url + '/user/categories/' + category._id);
+                        request.setRequestHeader('Authorization', constructedJWT);
+                        request.setRequestHeader("Content-Type", "application/json");
+
+                        request.onload = function () {
+                            if (request.status >= 200 && request.status < 400) {
+                                loadContent();
+                            } else {
+                                console.log('Fehler bei Linkerstellung');
+                            }
+                        };
+                        request.send();
+                        modalinstance.destroy();
+                    });
+
+                    canceldeletecategory.addEventListener('click', function () {
+                        modalinstance.destroy();
+                        while (modalsinside.firstChild) {
+                            modalsinside.removeChild(modalsinside.firstChild);
                         }
                     });
                 });
@@ -376,12 +418,13 @@ function loadContent() {
                             const instance = M.Chips.getInstance($('#' + category._id + 'tagsfield'));
                             const taginput = instance.chipsData;
                             const taginputlength = taginput.length;
+                            console.log(taginputlength);
 
                             for (let a = 0; a < taginput.length; a++) {
                                 tags.push(taginput[a].tag);
                             }
-                            for (let b = taginput.length; b >= 0; b--) {
-                                instance.deleteChip(b);
+                            for (let b = 0; b < taginputlength; b++) {
+                                instance.deleteChip();
                             }
 
                             const createdAt = formatDate();
@@ -403,7 +446,7 @@ function loadContent() {
                                     const deletehelperextended = deletehelper.link;
 
                                     const divbody = document.createElement('div');
-                                    const card = createCard(category._id, deletehelperextended);
+                                    const card = createCard(category._id, deletehelperextended, true);
 
                                     divbody.setAttribute('class', 'collapsible-body noMargin noPadding');
 
@@ -432,7 +475,7 @@ function loadContent() {
                     // Adding Links to content
 
                     const divbody = document.createElement('div');
-                    const card = createCard(category._id, category.links[c]);
+                    const card = createCard(category._id, category.links[c], true);
 
                     divbody.setAttribute('class', 'collapsible-body noMargin noPadding');
 
@@ -443,9 +486,12 @@ function loadContent() {
         } else {
             errortab2.textContent = 'You are not logged in.'
         }
-    };
+    }
+    ;
     request.send();
 }
+
+// Search the Storage for URL or Description
 
 searchsubmiturldesc.addEventListener('click', function () {
 
@@ -467,10 +513,10 @@ searchsubmiturldesc.addEventListener('click', function () {
                 data.forEach(category => {
                     for (let d = 0; d < category.links.length; d++) {
                         if (category.links[d].link.includes(searchinput) && searchselect === '1') {
-                            let card = createCard(category._id, category.links[d]);
+                            let card = createCard(category._id, category.links[d], true);
                             searchurldesccontent.appendChild(card);
                         } else if (category.links[d].linkdescription.includes(searchinput) && searchselect === '2') {
-                            let card = createCard(category._id, category.links[d]);
+                            let card = createCard(category._id, category.links[d], true);
                             searchurldesccontent.appendChild(card);
                         }
                     }
@@ -484,6 +530,8 @@ searchsubmiturldesc.addEventListener('click', function () {
         console.log('Fehler bei Suche');
     }
 });
+
+// Search the content for Tags
 
 searchsubmittags.addEventListener('click', function () {
 
@@ -512,7 +560,7 @@ searchsubmittags.addEventListener('click', function () {
                     );
                     for (let f = 0; f < filteredLinks.length; f++) {
                         if (filteredLinks && filteredLinks.length) {
-                            const card = createCard(category._id, filteredLinks[f]);
+                            const card = createCard(category._id, filteredLinks[f], false);
                             searchtagscontent.appendChild(card);
                         }
                     }
@@ -527,7 +575,9 @@ searchsubmittags.addEventListener('click', function () {
     }
 });
 
-function createCard(categoryid, link) {
+// Creating the cards inside the storage and search instance
+
+function createCard(categoryid, link, place) {
 
     const card = document.createElement('div');
     const cardcontent = document.createElement('div');
@@ -567,18 +617,22 @@ function createCard(categoryid, link) {
         tagadd.textContent = link.tags[i] + '  ';
         ptags.appendChild(tagadd);
         tagadd.addEventListener('click', function () {
-            const chipsinstancedata = (M.Chips.getInstance($('#searchchipstags')).chipsData);
-            if (true) {
+            const chipsinstancedata = chipsinstance.chipsData;
+            if (place) {
                 $('ul.tabs').tabs("select", "tab3");
                 $('ul.tabs').tabs("select", "tagstab");
-                chipsinstance.addChip({
-                    tag: link.tags[i],
-                });
+                chipsinstance.deleteChip();
                 console.log('chip added');
-                for (let j = 0; j < chipsinstancedata.length; j++) {
-                    searchtagscontent.removeChild(searchtagscontent.firstChild);
+                console.log(searchtagscontent.hasChildNodes());
+                if (searchtagscontent.hasChildNodes()) {
+                    while (searchtagscontent.firstChild) {
+                        searchtagscontent.removeChild(searchtagscontent.firstChild);
+                    }
                 }
             }
+            chipsinstance.addChip({
+                tag: link.tags[i],
+            });
         })
     }
 
@@ -612,6 +666,8 @@ function createCard(categoryid, link) {
     });
     return card;
 }
+
+// simple date format
 
 function formatDate() {
     let d = new Date(),
