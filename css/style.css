@@ -86,6 +86,6 @@ p, span {
     word-break:break-all;
 }
 
-.modal-content {
+#registermodal {
     height: 300px;
 }
