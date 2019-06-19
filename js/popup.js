@@ -10,7 +10,7 @@ const ulist = document.getElementById('ulist');
 
 const loginform = document.getElementById('loginform');
 const loginsubmit = document.getElementById('loginsubmit');
-const loginh4 = document.getElementById('loginh4');
+const loginh3 = document.getElementById('loginh3');
 
 const registerform = document.getElementById('registerform');
 const registersubmit = document.getElementById('registersubmit');
@@ -76,8 +76,8 @@ loginsubmit.addEventListener('click', function () {
                 $("#loginform")[0].reset();
                 window.location.reload();
             } else {
-                loginh4.setAttribute('class', 'red-text');
-                loginh4.textContent = 'Wrong Email or Password';
+                loginh3.setAttribute('class', 'align center red-text');
+                loginh3.textContent = 'Wrong Email or Password';
             }
         };
         request.send(body);
@@ -135,8 +135,8 @@ function loadContent() {
 
             let data = JSON.parse(this.response);
 
-            loginh4.setAttribute('class', 'green-text');
-            loginh4.textContent = 'You are logged in';
+            loginh3.setAttribute('class', 'align center green-text');
+            loginh3.textContent = 'You are logged in';
             ulist.style.display = 'block';
 
             // Setup for Category Button
