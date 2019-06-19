@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
-<body class="scroll">
+<body class="scroll" id="body">
 
 <nav class="blue-grey darken-3">
     <div class="nav-wrapper">
         <a class="brand-logo center">Link Storage</a>
+        <ul id="nav-mobile" class="right">
+            <li><a class="modal-trigger" href="#registermodal" id="modaltrigger">Register</a></li>
+        </ul>
     </div>
 </nav>
 
@@ -20,59 +23,37 @@
 
     <div class="col s12 noMargin noPadding">
         <ul class="tabs tabs-fixed-width" id="tabs">
-            <li class="tab col s3"><a class="" href="#tab1" id="login">Login</a></li>
-            <li class="tab col s3"><a class="active" href="#tab2" id="storage">Storage</a></li>
+            <li class="tab col s3"><a class="active" href="#tab1" id="login">Login</a></li>
+            <li class="tab col s3" id="storage"><a href="#tab2">Storage</a></li>
             <li class="tab col s3"><a class="" href="#tab3" id="search">Search</a></li>
         </ul>
     </div>
 
     <div id="tab1" class="col s12 scroll noMargin noPadding">
-        <ul class="tabs tabs-fixed-width">
-            <li class="tab col s3"><a class="active" href="#logintab">Login</a></li>
-            <li class="tab col s3"><a class="" href="#registertab">Register</a></li>
-        </ul>
-        <div id="logintab">
-            <form id="loginform" class="col s12">
-                <div class="input-field col s12">
-                    <input id="loginemail" type="email" class="validate" required>
-                    <label for="loginemail">Email</label>
-                    <span class="helper-text" data-error="Please enter a correct Email"></span>
-                </div>
-                <div class="input-field col s12">
-                    <input id="loginpassword" type="password" class="validate" minlength=4 maxlength=16 required>
-                    <label for="loginpassword">Password</label>
-                    <span class="helper-text" data-error="Your password should be between 6 and 16 characters"></span>
-                </div>
-                <a class="waves-effect waves-light btn" id="loginsubmit"><i class="material-icons left">lock_open</i>Login</a>
-            </form>
-            <div class="row center">
-                <h4 id="loginh4"></h4>
+        <form id="loginform" class="col s12">
+            <div class="input-field col s12">
+                <input id="loginemail" type="email" class="validate" required>
+                <label for="loginemail">Email</label>
+                <span class="helper-text" data-error="Please enter a correct Email"></span>
             </div>
-        </div>
-        <div id="registertab">
-            <form id="registerform" class="col s12">
-                <div class="input-field col s12">
-                    <input id="registeremail" type="email" class="validate" required>
-                    <label for="registeremail">Email</label>
-                    <span class="helper-text" data-error="Please enter a correct Email"></span>
-                </div>
-                <div class="input-field col s12">
-                    <input id="registerpassword" type="password" class="validate" minlength=4 maxlength=16 required>
-                    <label for="registerpassword">Password</label>
-                    <span class="helper-text" data-error="Your password should be between 6 and 16 characters"></span>
-                </div>
-                <a class="waves-effect waves-light btn" id="registersubmit"><i class="material-icons left">lock_open</i>Register</a>
-            </form>
-            <div class="row center">
-                <h4 id="registerh4"></h4>
+            <div class="input-field col s12">
+                <input id="loginpassword" type="password" class="validate" minlength=4 maxlength=16 required>
+                <label for="loginpassword">Password</label>
+                <span class="helper-text" data-error="Your password should be between 6 and 16 characters"></span>
             </div>
+            <a class="waves-effect waves-light btn" id="loginsubmit"><i
+                    class="material-icons left">lock_open</i>Login</a>
+            <!-- <a class="waves-effect waves-light btn red" id="logoutsubmit"><i class="material-icons left">lock</i>Logout</a> -->
+        </form>
+        <div class="row center">
+            <h4 id="loginh4"></h4>
         </div>
     </div>
 
     <div id="tab2" class="col s12 scroll noMargin noPadding">
         <ul id="ulist" class="collapsible" style="display: none;"></ul>
         <h3 class="align center red-text" id="errortab2"></h3>
-        <div id="modalsinside"></div>
+
     </div>
 
     <div id="tab3" class="col s12 scroll noMargin noPadding">
@@ -107,6 +88,30 @@
             </form>
             <div id="searchtagscontent" class="col s12"></div>
             <h3 class="align center red-text" id="errortab4"></h3>
+        </div>
+    </div>
+
+    <div id="modalsinside"></div>
+
+    <div id="registermodal" class="modal">
+        <div class="modal-content noPadding noMargin">
+            <form id="registerform" class="col s12">
+                <div class="input-field col s12">
+                    <input id="registeremail" type="email" class="validate" required>
+                    <label for="registeremail">Email</label>
+                    <span class="helper-text" data-error="Please enter a correct Email"></span>
+                </div>
+                <div class="input-field col s12">
+                    <input id="registerpassword" type="password" class="validate" minlength=4 maxlength=16 required>
+                    <label for="registerpassword">Password</label>
+                    <span class="helper-text" data-error="Your password should be between 6 and 16 characters"></span>
+                </div>
+                <div class="modal-footer">
+                    <a class="waves-effect waves-teal lighten-2 btn-flat teal lighten-2 white-text" id="registersubmit">Register</a>
+                    <a class="waves-effect waves-red btn-flat red white-text" id="registercancel">Cancel</a>
+                    <p class="teal-text" id="registerp"></p>
+                </div>
+            </form>
         </div>
     </div>
 

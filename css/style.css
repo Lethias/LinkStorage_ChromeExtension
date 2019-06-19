@@ -85,3 +85,7 @@ nav .brand-logo {
 p, span {
     word-break:break-all;
 }
+
+.modal-content {
+    height: 300px;
+}

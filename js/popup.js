@@ -7,12 +7,15 @@ const errortab2 = document.getElementById('errortab2');
 const errortab3 = document.getElementById('errortab3');
 const errortab4 = document.getElementById('errortab4');
 const ulist = document.getElementById('ulist');
+
 const loginform = document.getElementById('loginform');
 const loginsubmit = document.getElementById('loginsubmit');
-const registersubmit = document.getElementById('registersubmit');
-const registerform = document.getElementById('registerform');
 const loginh4 = document.getElementById('loginh4');
-const registerh4 = document.getElementById('registerh4');
+
+const registerform = document.getElementById('registerform');
+const registersubmit = document.getElementById('registersubmit');
+const registerp = document.getElementById('registerp');
+const registermodal = document.getElementById('registermodal');
 
 const searchurldesccontent = document.getElementById('searchurldesccontent');
 const searchsubmiturldesc = document.getElementById('searchsubmiturldesc');
@@ -31,9 +34,27 @@ const constructedJWT = 'Bearer ' + jwt;
 
 // Initial content load
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadContent();
     M.AutoInit();
+});
+
+// Reload Content when Storage is clicked
+
+document.getElementById('storage').addEventListener('click', function () {
+    loadContent();
+});
+
+// Extend Body when Regisration opens / Set to normal when closes
+
+document.getElementById('modaltrigger').addEventListener('click', function () {
+    document.getElementById('body').style.height = "440px";
+});
+
+document.getElementById('registercancel').addEventListener('click', function () {
+    let registermodalinstance = M.Modal.getInstance(registermodal);
+    registermodalinstance.close();
+    document.getElementById('body').style.height = "";
 });
 
 // Login eventListener
@@ -77,15 +98,21 @@ registersubmit.addEventListener('click', function () {
 
         request.onload = function () {
             if (request.status === 409) {
-                registerh4.setAttribute('class', 'red-text');
-                registerh4.textContent = 'Mail taken';
+                registerp.setAttribute('class', 'red-text');
+                registerp.textContent = 'This Email has already been taken. Please choose another one.';
             } else if (request.status >= 200 && request.status < 400) {
-                registerh4.setAttribute('class', 'green-text');
-                registerh4.textContent = 'Registered. Login now!';
+                registerp.setAttribute('class', 'teal-text');
+                registerp.textContent = 'You have been registered and will be redirected soon.';
+                let registermodalinstance = M.Modal.getInstance(registermodal);
+                setTimeout(function () {
+                    registermodalinstance.close();
+                    registerp.textContent = '';
+                    document.getElementById('body').style.height = '';
+                }, 2000);
                 $("#registerform")[0].reset();
             } else {
-                registerh4.setAttribute('class', 'red-text');
-                registerh4.textContent = 'Something went wrong';
+                registerp.setAttribute('class', 'red-text');
+                registerp.textContent = 'The Email or Password does not match the requirements.';
             }
         };
         request.send(body);
@@ -95,17 +122,17 @@ registersubmit.addEventListener('click', function () {
 // Loading Storage when user is logged in
 
 function loadContent() {
-    tab2.removeChild(tab2.firstChild);
-    while (ulist.firstChild) {
-        ulist.removeChild(ulist.firstChild);
-    }
-
     let request = new XMLHttpRequest();
     request.open('GET', url + '/user/categories');
     request.setRequestHeader('Authorization', constructedJWT);
     request.onload = function () {
 
         if (request.status >= 200 && request.status < 400) {
+            tab2.removeChild(tab2.firstChild);
+            while (ulist.firstChild) {
+                ulist.removeChild(ulist.firstChild);
+            }
+
             let data = JSON.parse(this.response);
 
             loginh4.setAttribute('class', 'green-text');
@@ -364,7 +391,7 @@ function loadContent() {
                     modalcontentdiv.setAttribute('class', 'modal-content');
                     modalfooterdiv.setAttribute('class', 'modal-footer');
                     confirmdeletecategory.setAttribute('class', 'waves-effect waves-red btn-flat red white-text');
-                    canceldeletecategory.setAttribute('class', 'modal-close waves-effect waves-green btn-flat green white-text');
+                    canceldeletecategory.setAttribute('class', 'modal-close waves-effect waves-teal lighten-2 btn-flat teal lighten-2 white-text');
 
                     modalsinside.appendChild(modaldiv);
                     modaldiv.appendChild(modalcontentdiv);
@@ -622,7 +649,6 @@ function createCard(categoryid, link, place) {
                 $('ul.tabs').tabs("select", "tab3");
                 $('ul.tabs').tabs("select", "tagstab");
                 chipsinstance.deleteChip();
-                console.log('chip added');
                 console.log(searchtagscontent.hasChildNodes());
                 if (searchtagscontent.hasChildNodes()) {
                     while (searchtagscontent.firstChild) {
@@ -664,6 +690,7 @@ function createCard(categoryid, link, place) {
         };
         request.send();
     });
+
     return card;
 }
 
