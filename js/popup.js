@@ -1,5 +1,5 @@
 const url = 'http://localhost:3000';
-
+const body = document.getElementById('body');
 const tabs = document.getElementById("tabs");
 const tab2 = document.getElementById('tab2');
 const tab3 = document.getElementById('tab3');
@@ -49,14 +49,16 @@ document.getElementById('storage').addEventListener('click', function () {
 // Extend Body when Regisration opens / Set to normal when closes
 
 document.getElementById('modaltrigger').addEventListener('click', function () {
-    document.getElementById('body').style.height = "440px";
+    console.log('shit');
+    body.style.height = "440px";
 });
 
 document.getElementById('registercancel').addEventListener('click', function () {
     let registermodalinstance = M.Modal.getInstance(registermodal);
     registermodalinstance.close();
-    document.getElementById('body').style.height = "";
+    body.style.height = '';
 });
+
 
 // Login eventListener
 
