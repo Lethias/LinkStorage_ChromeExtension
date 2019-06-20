@@ -32,6 +32,7 @@ const modalsinside = document.getElementById('modalsinside');
 const jwt = localStorage.getItem('token');
 const constructedJWT = 'Bearer ' + jwt;
 
+
 // Initial content load
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -254,6 +255,9 @@ function loadContent() {
                 // Form setup for adding Links
 
                 const hiddendivlink = document.createElement('div');
+                const copydiv = document.createElement('div');
+                const copyurl = document.createElement('a');
+                const copydesc = document.createElement('a');
                 const addlinkform = document.createElement('form');
                 const inputdivlinkname = document.createElement('div');
                 const inputdivlinkdesc = document.createElement('div');
@@ -284,6 +288,11 @@ function loadContent() {
                 linksubmitbutton.setAttribute('class', 'waves-effect waves-light btn');
                 linknamelabel.setAttribute('for', category._id + 'name');
                 linkdescriptionlabel.setAttribute('for', category._id + 'description');
+                copyurl.setAttribute('class', 'btn btn-small waves-effect waves-light teal lighten-2');
+                copydesc.setAttribute('class', 'btn btn-small waves-effect waves-light teal lighten-2');
+
+                copyurl.textContent = 'Copy URL';
+                copydesc.textContent = 'Copy description';
 
                 inputdivlinkchips.setAttribute('class', 'chips chips-placeholder input-field');
                 inputdivlinkchips.setAttribute('id', category._id + 'tagsfield');
@@ -304,6 +313,9 @@ function loadContent() {
 
                 hiddendivlink.style.display = 'none';
 
+                hiddendivlink.append(copydiv);
+                copydiv.appendChild(copyurl);
+                copydiv.appendChild(copydesc);
                 hiddendivlink.appendChild(addlinkform);
                 addlinkform.appendChild(inputdivlinkname);
                 addlinkform.appendChild(inputdivlinkdesc);
@@ -374,6 +386,23 @@ function loadContent() {
                         }
                     });
 
+                // Copy Links and Description in Fields
+
+                copyurl.addEventListener('click', function () {
+                    document.getElementById(category._id + 'name').value = '';
+                    chrome.tabs.query({active: true, currentWindow: true}, ([tab]) => {
+                        document.getElementById(category._id + 'name').value = tab.url;
+                        M.updateTextFields();
+                    });
+                });
+
+                copydesc.addEventListener('click', function () {
+                    document.getElementById(category._id + 'description').value = '';
+                    chrome.tabs.query({active: true, currentWindow: true}, ([tab]) => {
+                        document.getElementById(category._id + 'description').value = tab.title;
+                        M.updateTextFields();
+                    });
+                });
 
                 // Delete category button with API post to delete category and links
 
