@@ -1,5 +1,5 @@
 const url = 'http://localhost:3000';
-const body = document.getElementById('body');
+const htmlbody = document.getElementById('body');
 const tabs = document.getElementById("tabs");
 const tab2 = document.getElementById('tab2');
 const tab3 = document.getElementById('tab3');
@@ -50,13 +50,13 @@ document.getElementById('storage').addEventListener('click', function () {
 
 document.getElementById('modaltrigger').addEventListener('click', function () {
     console.log('shit');
-    body.style.height = "440px";
+    htmlbody.style.height = "440px";
 });
 
 document.getElementById('registercancel').addEventListener('click', function () {
     let registermodalinstance = M.Modal.getInstance(registermodal);
     registermodalinstance.close();
-    body.style.height = '';
+    htmlbody.style.height = '';
 });
 
 
@@ -110,7 +110,7 @@ registersubmit.addEventListener('click', function () {
                 setTimeout(function () {
                     registermodalinstance.close();
                     registerp.textContent = '';
-                    document.getElementById('body').style.height = '';
+                    htmlbody.style.height = '';
                 }, 2000);
                 $("#registerform")[0].reset();
             } else {
