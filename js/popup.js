@@ -139,7 +139,6 @@ function loadContent() {
 
         if (request.status >= 200 && request.status < 400) {
             loggedin = true;
-            console.log(loggedin);
             loginsubmit.setAttribute('class', 'waves-effect waves-light btn red');
             loginsubmit.textContent = 'Logout';
 
