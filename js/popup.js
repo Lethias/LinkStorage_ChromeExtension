@@ -32,6 +32,8 @@ const modalsinside = document.getElementById('modalsinside');
 const jwt = localStorage.getItem('token');
 const constructedJWT = 'Bearer ' + jwt;
 
+let loggedin = false;
+
 
 // Initial content load
 
@@ -63,27 +65,32 @@ document.getElementById('registercancel').addEventListener('click', function () 
 // Login eventListener
 
 loginsubmit.addEventListener('click', function () {
-    if (loginform.checkValidity()) {
-        let mail = document.getElementById('loginemail').value;
-        let password = document.getElementById('loginpassword').value;
-        let body = JSON.stringify({email: mail, password: password});
+    if (!loggedin) {
+        if (loginform.checkValidity()) {
+            let mail = document.getElementById('loginemail').value;
+            let password = document.getElementById('loginpassword').value;
+            let body = JSON.stringify({email: mail, password: password});
 
-        let request = new XMLHttpRequest();
-        request.open('POST', url + '/user/login');
-        request.setRequestHeader("Content-Type", "application/json");
+            let request = new XMLHttpRequest();
+            request.open('POST', url + '/user/login');
+            request.setRequestHeader("Content-Type", "application/json");
 
-        request.onload = function () {
-            if (request.status >= 200 && request.status < 400) {
-                let data = JSON.parse(this.response);
-                localStorage.setItem('token', data.token);
-                $("#loginform")[0].reset();
-                window.location.reload();
-            } else {
-                loginh3.setAttribute('class', 'align center red-text');
-                loginh3.textContent = 'Wrong Email or Password';
-            }
-        };
-        request.send(body);
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    let data = JSON.parse(this.response);
+                    localStorage.setItem('token', data.token);
+                    $("#loginform")[0].reset();
+                    window.location.reload();
+                } else {
+                    loginh3.setAttribute('class', 'align center red-text');
+                    loginh3.textContent = 'Wrong Email or Password';
+                }
+            };
+            request.send(body);
+        }
+    } else {
+        localStorage.removeItem('token');
+        window.location.reload();
     }
 });
 
@@ -131,6 +138,11 @@ function loadContent() {
     request.onload = function () {
 
         if (request.status >= 200 && request.status < 400) {
+            loggedin = true;
+            console.log(loggedin);
+            loginsubmit.setAttribute('class', 'waves-effect waves-light btn red');
+            loginsubmit.textContent = 'Logout';
+
             tab2.removeChild(tab2.firstChild);
             while (ulist.firstChild) {
                 ulist.removeChild(ulist.firstChild);
@@ -138,7 +150,7 @@ function loadContent() {
 
             let data = JSON.parse(this.response);
 
-            loginh3.setAttribute('class', 'align center green-text');
+            loginh3.setAttribute('class', 'align center teal-text');
             loginh3.textContent = 'You are logged in';
             ulist.style.display = 'block';
 
@@ -181,9 +193,9 @@ function loadContent() {
             categorydesc.setAttribute("maxlength", '80');
             categorydesc.setAttribute('id', 'categorydesc');
             categorynamevalidateerror.setAttribute('class', 'helper-text');
-            categorynamevalidateerror.setAttribute('data-error', 'Please insert a name for the category. Max length is 30 chars');
+            categorynamevalidateerror.setAttribute('data-error', 'Please insert a name for the category. Max length is 30 chars.');
             categorydescvalidateerror.setAttribute('class', 'helper-text');
-            categorydescvalidateerror.setAttribute('data-error', 'Please insert a description. Max length is 80 chars');
+            categorydescvalidateerror.setAttribute('data-error', 'Please insert a description. Max length is 80 chars.');
             categorysubmitbutton.setAttribute('class', 'waves-effect waves-light btn');
 
             categoryname.required = true;
@@ -652,7 +664,7 @@ function createCard(categoryid, link, place) {
     span.setAttribute('class', 'card-title');
     cardbottom.setAttribute('class', 'card-action');
     visitlinkbutton.setAttribute('href', '#');
-    visitlinkbutton.setAttribute('class', 'green-text');
+    visitlinkbutton.setAttribute('class', 'teal-text');
     deletelinkbutton.setAttribute('class', 'red-text');
     deletelinkbutton.setAttribute('href', '#');
     pdescription.setAttribute('class', 'underlinetext');
