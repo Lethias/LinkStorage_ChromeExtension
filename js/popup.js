@@ -51,7 +51,6 @@ document.getElementById('storage').addEventListener('click', function () {
 // Extend Body when Regisration opens / Set to normal when closes
 
 document.getElementById('modaltrigger').addEventListener('click', function () {
-    console.log('shit');
     htmlbody.style.height = "440px";
 });
 
@@ -487,7 +486,6 @@ function loadContent() {
                             const instance = M.Chips.getInstance($('#' + category._id + 'tagsfield'));
                             const taginput = instance.chipsData;
                             const taginputlength = taginput.length;
-                            console.log(taginputlength);
 
                             for (let a = 0; a < taginput.length; a++) {
                                 tags.push(taginput[a].tag);
@@ -555,8 +553,7 @@ function loadContent() {
         } else {
             errortab2.textContent = 'You are not logged in.'
         }
-    }
-    ;
+    };
     request.send();
 }
 
@@ -669,10 +666,7 @@ function createCard(categoryid, link, place) {
     pdescription.setAttribute('class', 'underlinetext');
     pdate.setAttribute('class', 'right-align');
 
-    const substringhelper = link.link;
-    const substring = substringhelper.substring(0, 35);
-
-    span.innerText = substring;
+    span.innerText = link.link;
     pdescription.textContent = 'Description: ' + link.linkdescription;
     pdate.textContent = 'Link created at: ' + link.createdAt;
     ptags.textContent = 'Tags: ';
