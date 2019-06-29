@@ -111,7 +111,7 @@ registersubmit.addEventListener('click', function () {
                 registerp.setAttribute('class', 'red-text');
                 registerp.textContent = 'This Email has already been taken. Please choose another one.';
             } else if (request.status >= 200 && request.status < 400) {
-                registerp.setAttribute('class', 'teal-text');
+                registerp.setAttribute('class', 'teal-text text-lighten-2');
                 registerp.textContent = 'You have been registered and will be redirected soon.';
                 let registermodalinstance = M.Modal.getInstance(registermodal);
                 setTimeout(function () {
@@ -149,7 +149,7 @@ function loadContent() {
 
             let data = JSON.parse(this.response);
 
-            loginh3.setAttribute('class', 'align center teal-text');
+            loginh3.setAttribute('class', 'align center teal-text text-lighten-2');
             loginh3.textContent = 'You are logged in';
             ulist.style.display = 'block';
 
@@ -663,7 +663,7 @@ function createCard(categoryid, link, place) {
     span.setAttribute('class', 'card-title');
     cardbottom.setAttribute('class', 'card-action');
     visitlinkbutton.setAttribute('href', '#');
-    visitlinkbutton.setAttribute('class', 'teal-text');
+    visitlinkbutton.setAttribute('class', 'teal-text text-lighten-2');
     deletelinkbutton.setAttribute('class', 'red-text');
     deletelinkbutton.setAttribute('href', '#');
     pdescription.setAttribute('class', 'underlinetext');
