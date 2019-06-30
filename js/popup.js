@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000';
+const url = 'https://link-storage-api.herokuapp.com';
 const htmlbody = document.getElementById('body');
 const tabs = document.getElementById("tabs");
 const tab2 = document.getElementById('tab2');
