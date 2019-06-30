@@ -579,10 +579,10 @@ searchsubmiturldesc.addEventListener('click', function () {
                 data.forEach(category => {
                     for (let d = 0; d < category.links.length; d++) {
                         if (category.links[d].link.includes(searchinput) && searchselect === '1') {
-                            let card = createCard(category._id, category.links[d], true);
+                            let card = createCard(category._id, category.links[d], false);
                             searchurldesccontent.appendChild(card);
                         } else if (category.links[d].linkdescription.includes(searchinput) && searchselect === '2') {
-                            let card = createCard(category._id, category.links[d], true);
+                            let card = createCard(category._id, category.links[d], false);
                             searchurldesccontent.appendChild(card);
                         }
                     }
@@ -624,6 +624,7 @@ searchsubmittags.addEventListener('click', function () {
                     let filteredLinks = category.links.filter(link =>
                         tagcompare.every(searchTag => link.tags.includes(searchTag))
                     );
+
                     for (let f = 0; f < filteredLinks.length; f++) {
                         if (filteredLinks && filteredLinks.length) {
                             const card = createCard(category._id, filteredLinks[f], false);
